@@ -33,21 +33,23 @@ include "includes/sidebar.php";
                         //     Afficher la catégorie
                         $i ++;
                         
-                        
-                    
+                     
+                       
 
 
                     
                     // Récupérer les données de la table post
                     // Tant que les données sont récupérées
                     //     Afficher les données
+                    echo $result['image']
                     ?>
                     <tr class="odd gradeX">
+                        
                         <td><?php echo $i; ?></td>
                         <td><?php echo $result['title'];?></td>
                         <td><?php echo $result['body'];?></td>
                         <td><?php echo $result2['name'];?></td>
-                        <td><img src="<?php $result['image']?>" height="40px" width="80px" alt=""></td>
+                        <td><img src="<?php echo $result['image']?>" height="40px" width="80px" alt=""></td>
                         <td><?php echo $result['author'];?></td>
                         <td><?php echo $result['tags'];?></td>
                         <td><?php echo $result['date'];?></td>
