@@ -41,7 +41,6 @@ include "includes/sidebar.php";
                     // Récupérer les données de la table post
                     // Tant que les données sont récupérées
                     //     Afficher les données
-                    echo $result['image']
                     ?>
                     <tr class="odd gradeX">
                         
