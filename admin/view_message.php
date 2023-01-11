@@ -1,5 +1,6 @@
 <?php
 // Inclure le fichier header.php
+include "includes/header.php"
 // Inclure le fichier sidebar.php
 ?>
 <?php
