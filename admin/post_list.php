@@ -27,10 +27,10 @@ include "includes/sidebar.php";
                     $query = "SELECT * FROM post";
                     $list = $db->crate($query);
                     $i = 0;
-                    if ($result = $list->fetch_assoc()){ 
+                    while ($result = $list->fetch_assoc()){ 
                         //     Afficher la catégorie
                         $i ++;
-                    }
+                    
                     // Récupérer les données de la table post
                     // Tant que les données sont récupérées
                     //     Afficher les données
@@ -47,6 +47,9 @@ include "includes/sidebar.php";
                         <td><a href="edit_post.php?edit_postid=">Modifier</a>
                             || <a onclick="return confirm('Etes vous sur de vouloir supprimer ?')" href="delete_post.php?del_postid=">Supprimer</a></td>
                     </tr>
+                    <?php
+                    }
+                    ?>
                 </tbody>
             </table>
 

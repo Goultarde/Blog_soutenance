@@ -1,6 +1,6 @@
 ﻿<?php
-// Inclure le fichier header.php
-// Inclure le fichier sidebar.php
+include 'includes/header.php';
+include 'includes/sidebar.php';
 ?>
 <style>
     .left {
@@ -20,9 +20,26 @@
 </style>
 <div class="grid_10">
     <div class="box round first grid">
-        <h2>Mettre à jour le titre et la description du site</h2>
+        <h2>Mettre a jour le titre et la description du site</h2>
         <!--            For Update website Title & Logo-->
         <?php
+        if (isset($_POST["submit"])) {
+            $title = $_POST['title'];
+            $logo = $_POST['logo']; 
+            if(empty($title)) {
+                echo 'Il y a une erreur dans le titre';
+            }else if (empty($logo)) {
+                $sql = "UPDATE title_slogan SET title='$title' WHERE id=1";
+                if (mysqli_query($con, $sql)) {
+                    echo "Mise à jour reussie";
+                }else {
+                    echo "Erreur";
+                }
+            } else {
+                
+            }
+        }
+
         // Si la méthode de requête est POST
         // Alors
         //     Récupérer la valeur de title
@@ -62,6 +79,13 @@
 
         <!--               For show blog title  & logo from database-->
         <?php
+        $sql = "SELECT * FROM title_slogan";
+        // $result = mysqli_query($con, $sql);
+        // if (mysqli_num_rows($result) > 0) {
+        //     while($row = mysqli_fetch_assoc($result)) {
+        //         echo "title: " . $row["title"]. " - slogan: " . $row["slogan"]. "<br>";
+        //     }
+        // }
         // Récupérer les données de la table title_slogan
         // Tant que les données sont récupérées
         //     Afficher les données
@@ -97,7 +121,7 @@
                 </form>
             </div>
             <div class="right">
-                <img src="" alt="logo">
+                <img src="uploads/logo.png" alt="logo">
             </div>
         </div>
     </div>
@@ -106,5 +130,5 @@
 </div>
 </div>
 <?php
-// Inclure le fichier footer.php
+include 'includes/footer.php';
 ?>
