@@ -2,7 +2,7 @@
 // Inclure le fichier header.php
 include "includes/header.php";
 // Inclure le fichier sidebar.php
-include "includes/footer.php";
+include "includes/sidebar.php";
 ?>
 <div class="grid_10">
 
@@ -27,6 +27,34 @@ include "includes/footer.php";
         //                     Afficher un message de succès
         //                 Sinon
         //                     Afficher un message d'erreur
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $facebook = $_POST['facebook'];
+            $github = $_POST['github'];
+            $skype = $_POST['skype'];
+            $linkedin = $_POST['linkedin'];
+            $google = $_POST['google'];
+            
+            if (empty($facebook)) {
+                echo "<span style='color:red;font-size:18px;'>Le champ ne doit pas être vide</span>";
+            }elseif(empty($github)){
+                echo "<span style='color:red;font-size:18px;'>Le champ ne doit pas être vide</span>";
+            }elseif(empty($skype)){
+                echo "<span style='color:red;font-size:18px;'>Le champ ne doit pas être vide</span>";
+            }elseif(empty($linkedin)){
+                echo "<span style='color:red;font-size:18px;'>Le champ ne doit pas être vide</span>";
+            }elseif(empty($google)){
+                echo "<span style='color:red;font-size:18px;'>Le champ ne doit pas être vide</span>";
+            } else{
+                    
+                $query = "UPDATE social SET facebook='$facebook', github='$github' ,skype='$skype', linkedin='$linkedin', google='$google'";
+                $update_social =  $db->update($query);
+                if ($update_social) {
+                    echo "<span style='color:green;font-size:18px;'>réseau ajouter</span>";
+                } else {
+                    echo "<span style='color:red;font-size:18px;'>réseau non modifier</span>";
+                }                    
+            }
+        }
         ?>
 
         <div class="block">
@@ -94,4 +122,5 @@ include "includes/footer.php";
 </div>
 <?php
 // Inclure le fichier footer.php
+include "includes/footer.php"
 ?>
