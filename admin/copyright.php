@@ -14,7 +14,7 @@ include "includes/sidebar.php";
         if(isset($_POST['copyright'])){
         // Alors
         //     Récupérer la valeur de copyright
-            $copyright = $_GET['copyright'];
+            $copyright = $_POST['copyright'];
         //     Si copyright est vide
             if(empty($copyright)){
                 //Afficher un message d'erreur
@@ -22,11 +22,10 @@ include "includes/sidebar.php";
             }
             else {
                 //Mettre à jour le copyright dans la table footer
-                $copyright_get = "UPDATE copyright FROM footer";
-                $copyright_update = $db->select($copyright_get);
-                $update = $copyright_update->fetch_assoc();
+                $copyright_get = "UPDATE footer SET copyright='$copyright'";
+                $copyright_update = $db->update($copyright_get);
                 // Si le copyright est mis à jour
-                if($copyright = $copyright_query){
+                if($copyright_update){
                     // Afficher un message de succès
                     echo "Copyright mis à jour";
                 }
