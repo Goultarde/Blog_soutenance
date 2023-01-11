@@ -21,7 +21,7 @@ include "includes/sidebar.php";
                         <th width="10%">Date</th>
                         <th width="12%"> Action</th>
                     </tr>
-</thead>
+                </thead>
                 <tbody>
                     <?php
                     $query = "SELECT * FROM post";
