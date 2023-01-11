@@ -23,14 +23,15 @@ include 'includes/sidebar.php';
         <h2>Mettre a jour le titre et la description du site</h2>
         <!--            For Update website Title & Logo-->
         <?php
-        if (isset($_POST["submit"])) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $title = $_POST['title'];
             $logo = $_POST['logo']; 
             if(empty($title)) {
                 echo 'Il y a une erreur dans le titre';
             }else if (empty($logo)) {
-                $sql = "UPDATE title_slogan SET title='$title' WHERE id=1";
-                if (mysqli_query($con, $sql)) {
+                $query = "UPDATE title SET title='$title' WHERE id=1";
+                $update_title =  $db->update($query);
+                if ($sql){
                     echo "Mise à jour reussie";
                 }else {
                     echo "Erreur";
