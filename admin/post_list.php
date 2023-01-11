@@ -25,11 +25,18 @@ include "includes/sidebar.php";
                 <tbody>
                     <?php
                     $query = "SELECT * FROM post";
+                    $query2 = "SELECT * FROM category ";
                     $list = $db->crate($query);
+                    $list2 = $db->crate($query2);
                     $i = 0;
-                    while ($result = $list->fetch_assoc()){ 
+                    while ($result = $list->fetch_assoc() and $result2 = $list2->fetch_assoc() ){ 
                         //     Afficher la catégorie
                         $i ++;
+                        
+                        
+                    
+
+
                     
                     // Récupérer les données de la table post
                     // Tant que les données sont récupérées
@@ -39,7 +46,7 @@ include "includes/sidebar.php";
                         <td><?php echo $i; ?></td>
                         <td><?php echo $result['title'];?></td>
                         <td><?php echo $result['body'];?></td>
-                        <td><?php echo $result['image'];?></td>
+                        <td><?php echo $result2['name'];?></td>
                         <td><img src="<?php $result['image']?>" height="40px" width="80px" alt=""></td>
                         <td><?php echo $result['author'];?></td>
                         <td><?php echo $result['tags'];?></td>
@@ -48,6 +55,7 @@ include "includes/sidebar.php";
                             || <a onclick="return confirm('Etes vous sur de vouloir supprimer ?')" href="delete_post.php?del_postid=">Supprimer</a></td>
                     </tr>
                     <?php
+                    
                     }
                     ?>
                 </tbody>
