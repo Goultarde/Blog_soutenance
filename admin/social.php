@@ -63,7 +63,14 @@ include "includes/sidebar.php";
             // Récupérer les données de la table tbl_social
             // Tant que les données sont récupérées
             //     Afficher les données
-            ?>
+            // Récupérer les données de la table post
+            // Tant que les données sont récupérées
+            //     Afficher les données
+            $query = "SELECT * FROM social";
+            $list = $db->crate($query);
+            $result = $list->fetch_assoc()
+                    ?>
+                    
             <form action="" method="post">
                 <table class="form">
                     <tr>
@@ -71,7 +78,8 @@ include "includes/sidebar.php";
                             <label>Facebook</label>
                         </td>
                         <td>
-                            <input type="text" name="facebook" value="" class="medium" />
+                            <input type="text" name="facebook" value="<?php echo $result['facebook'];?>" class="medium"/>
+                            
                         </td>
                     </tr>
                     <tr>
@@ -79,7 +87,7 @@ include "includes/sidebar.php";
                             <label>Github</label>
                         </td>
                         <td>
-                            <input type="text" name="github" value="" class=" medium" />
+                            <input type="text" name="github" value="<?php echo $result['github'];?>" class=" medium" />
                         </td>
                     </tr>
                     <tr>
@@ -87,7 +95,7 @@ include "includes/sidebar.php";
                             <label>Skype</label>
                         </td>
                         <td>
-                            <input type="text" name="skype" value="" class="medium" />
+                            <input type="text" name="skype" value="<?php echo $result['skype'];?>" class="medium" />
                         </td>
                     </tr>
 
@@ -96,7 +104,7 @@ include "includes/sidebar.php";
                             <label>LinkedIn</label>
                         </td>
                         <td>
-                            <input type="text" name="linkedin" value="" class="medium" />
+                            <input type="text" name="linkedin" value="<?php echo $result['linkedin'];?>" class="medium" />
                         </td>
                     </tr>
 
@@ -105,7 +113,7 @@ include "includes/sidebar.php";
                             <label>Google </label>
                         </td>
                         <td>
-                            <input type="text" name="google" value="" class="medium" />
+                            <input type="text" name="google" value="<?php echo $result['google'];?>" class="medium" />
                         </td>
                     </tr>
 
