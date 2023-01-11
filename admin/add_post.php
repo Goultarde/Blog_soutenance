@@ -36,7 +36,6 @@ include "includes/sidebar.php";
         } elseif (in_array($file_ext, $permited) == false) {
             echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
         } else {
-            echo $category_id;
             move_uploaded_file($file_temp, $uploaded_image);
             $query = "INSERT INTO post(category_id, title, body, image, author, tags) VALUES ('$category_id','$title', '$body', '$uploaded_image', '$author', '$tags')";
             $inserted_rows = $db->crate($query);
