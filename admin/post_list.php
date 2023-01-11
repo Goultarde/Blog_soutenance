@@ -63,5 +63,5 @@ include "includes/sidebar.php";
 </script>
 <?php
 // Inclure le fichier footer.php
-include 'footer.php'
+include 'includes/footer.php'
 ?>

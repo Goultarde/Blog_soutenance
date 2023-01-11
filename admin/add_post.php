@@ -1,36 +1,58 @@
 ﻿<?php
 // Inclure le fichier header.php
+include "includes/header.php";
 // Inclure le fichier sidebar.php
+include "includes/sidebar.php";
 ?>
 <div class="grid_10">
 
     <div class="box round first grid">
         <h2>Ajouter un nouveau post</h2>
         <?php
-        // Si la méthode de requête est POST
-        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-        
-        $category_id = $_POST ['category_id'];   
-        $title = $_POST ['title'];
-        $body = $_POST ['body']; 
-        $image = $_POST ['image'];
-        $author = $_POST ['author'];
-        $tags = $_POST ['tags'];
+       
 
-        
-        if(empty($title)) {
-            echo 'Title est un champs oblligatoire';
-        }else{
-            $add_post = "INSERT INTO post(category_id,title,body,image,author,tags) where values='?,?,?,?,?,?' ";
-            $post = $db->crate($add_post);
+       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+           $title = mysqli_real_escape_string($db->link,$_POST['title']);
+           $category_id = mysqli_real_escape_string($db->link,$_POST['category_id']);
+           $author = mysqli_real_escape_string($db->link,$_POST['author']);
+           $tags = mysqli_real_escape_string($db->link,$_POST['tags']);
+           $body = mysqli_real_escape_string($db->link,$_POST['body']);
+
+           $permited = array('jpg', 'jpeg', 'png', 'gif');
+           $file_name = $_FILES['image']['name'];
+           $file_size = $_FILES['image']['size'];
+           $file_temp = $_FILES['image']['tmp_name'];
+
+           $div = explode('.', $file_name);
+           $file_ext = strtolower(end($div));
+           $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
+           $uploaded_image = "uploads/" . $unique_image;
+
+
+           if ($title == ''||$category_id == 'Select Category'|| $file_name == ''||$author == ''||$tags == ''||$body == '') {
+            echo "<span style='color:red;front-size:18px;'>Le champ ne doit pas être vide</span>";
+        } elseif ($file_size > 1848567) {
+            echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
+        } elseif (in_array($file_ext, $permited) == false) {
+            echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
+        } else {
+            echo $category_id;
+            move_uploaded_file($file_temp, $uploaded_image);
+            $query = "INSERT INTO post(category_id, title, body, image, author, tags) VALUES ('$category_id','$title', '$body', '$uploaded_image', '$author', '$tags')";
+            $inserted_rows = $db->crate($query);
+
+            if ($inserted_rows) {
+                echo "<span class='success'> Données crées avec succès. </span>";
+            }else {
+                echo "<span class= 'error'> Données non créées! </span>";
+            }
+
         }
-        //  Si le post est inséré
-        if ($add_post) { 
-            echo "success";
-        }
-        else{
-            echo "Error";
-        }}
+
+
+    }; 
+
+
         ?>
         <div class="block">
             <form action="" method="post" enctype="multipart/form-data">
@@ -52,11 +74,17 @@
                         <td>
                             <select id="select" name="category_id">
                                 <option>Select Category </option>
+                                
                                 <?php
-                                // Récupérer les catégories de la table category
-                                // Tant que les catégories sont récupérées
-                                //     Afficher les catégories dans la liste déroulante
+                                $query = "SELECT * FROM category";
+                                $show_category = $db->select($query);
+                                if ($show_category) {
+                                    while ($result = $show_category->fetch_assoc()) {
                                 ?>
+                                        <option value="<?php echo $result['category_id'] ?>"><?php echo $result['name'] ?></option>
+                                <?php };
+                                } ?>
+                                
                                 <option value=""></option>
                             </select>
                         </td>
