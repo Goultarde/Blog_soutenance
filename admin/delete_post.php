@@ -27,7 +27,7 @@ $del_postid = $_GET['del_postid'];
 
 //         Récupérer les données de la table post
 $query="SELECT * FROM post";
-$post= $db->crate($query);
+$post= $db->select($query);
 
     //         Tant que les données sont récupérées
 while($post->fetch_assoc()){

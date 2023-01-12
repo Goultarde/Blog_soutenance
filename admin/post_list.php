@@ -26,8 +26,8 @@ include "includes/sidebar.php";
                     <?php
                     $query = "SELECT * FROM post";
                     $query2 = "SELECT * FROM category ";
-                    $list = $db->crate($query);
-                    $list2 = $db->crate($query2);
+                    $list = $db->select($query);
+                    $list2 = $db->select($query2);
                     $i = 0;
                     while ($result = $list->fetch_assoc() and $result2 = $list2->fetch_assoc() ){ 
                         //     Afficher la catégorie

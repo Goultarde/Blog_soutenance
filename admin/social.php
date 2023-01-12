@@ -67,7 +67,7 @@ include "includes/sidebar.php";
             // Tant que les données sont récupérées
             //     Afficher les données
             $query = "SELECT * FROM social";
-            $list = $db->crate($query);
+            $list = $db->select($query);
             $result = $list->fetch_assoc()
                     ?>
                     

@@ -7,8 +7,7 @@
         <div class="block copyblock">
             <?php
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $name = $_POST['name'];
-                $name = mysqli_real_escape_string($db->link, $name);
+                $name = mysqli_real_escape_string($db->link, $_POST['name']);
                 if (empty($name)) {
                     echo "<span style='color:red;font-size:18px;'>Le champ ne doit pas être vide</span>";
                 } else {

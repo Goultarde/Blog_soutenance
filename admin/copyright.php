@@ -11,7 +11,7 @@ include "includes/sidebar.php";
         <?php
 
         // Si la méthode de requête est POST
-        if(isset($_POST['copyright'])){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         // Alors
         //     Récupérer la valeur de copyright
             $copyright = $title = mysqli_real_escape_string($db->link,$_POST['copyright']);

@@ -57,7 +57,7 @@ header('location:category_list.php');
                     echo 'error';
                 }else{
                     
-                    $query = "UPDATE category SET name='$name'WHERE category_id=$id";
+                    $query = "UPDATE category SET name='$name' WHERE category_id=$id";
                     $update_cat =  $db->update($query);
                     if ($update_cat) {
                         echo "<span style='color:green;font-size:18px;'>Catégorie modifier avec succès</span>";

@@ -71,8 +71,12 @@ $format = new Format();
                     </div>
                     <div class="floatleft marginleft10">
                         <?php
-                        if (isset($_GET[
-                            /li>
+                        if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+                            Session::destroy();
+                        }
+                        ?>
+                        <ul class="inline-ul floatleft">
+                            <li>Admin</li>
                             <li><a href="?action=logout">Déconnexion</a></li>
                         </ul>
                     </div>

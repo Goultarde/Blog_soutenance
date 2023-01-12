@@ -30,7 +30,7 @@ include "includes/sidebar.php";
 
 
            if ($title == ''||$category_id == 'Select Category'|| $file_name == ''||$author == ''||$tags == ''||$body == '') {
-            echo "<span style='color:red;front-size:18px;'>Le champ ne doit pas être vide</span>";
+            echo "<span style='color:red;front-size:18px;'>Les champs ne doivent pas être vide</span>";
         } elseif ($file_size > 1848567) {
             echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
         } elseif (in_array($file_ext, $permited) == false) {

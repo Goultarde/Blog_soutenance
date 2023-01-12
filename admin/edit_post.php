@@ -97,7 +97,7 @@ $edit_postid = $_GET['edit_postid'];
             <?php
             
             $query="SELECT * FROM post WHERE id='$edit_postid'";
-            $post= $db->crate($query);
+            $post= $db->select($query);
             $print = $post->fetch_assoc();
             
             ?>
@@ -166,11 +166,11 @@ $edit_postid = $_GET['edit_postid'];
                         </td>
                         <td>
                             <textarea class="tinymce" name="body"><?php echo $print['body'];?></textarea>
-                            <td></td>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
+                        
                         <td>
                             <input type="submit" name="submit" Value="Sauvegarder" />
                         </td>
