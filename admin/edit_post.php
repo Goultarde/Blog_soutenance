@@ -60,24 +60,34 @@ $edit_postid = $_GET['edit_postid'];
             $uploaded_image = "uploads/" . $unique_image;
  
  
-            if ('$title' == '') {
+            if ($title == '') {
              echo "<span style='color:red;front-size:18px;'>Le champ ne doit pas être vide</span>";
-         } elseif ($file_size > 1848567) {
-             echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
-         } elseif (in_array($file_ext, $permited) == false) {
-             echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
-         } else {
-             move_uploaded_file($file_temp, $uploaded_image);
-
-
-             $query = "UPDATE post SET title ='$title', category_id='$category_id', image='$uploaded_image', author='$author', tags='$tags', body='$body' WHERE id='$edit_postid'";
-             $update_cat =  $db->update($query);
-                    if ($update_cat) {
-                        echo "<span style='color:green;font-size:18px;'>POST modifier avec succès</span>";
-                    } else {
-                        echo "<span style='color:red;font-size:18px;'>POST non modifier</span>";
-                    }     
- 
+         } if ($file_size == 0){
+            $query = "UPDATE post SET title ='$title', category_id='$category_id', author='$author', tags='$tags', body='$body' WHERE id='$edit_postid'";
+            $update_cat =  $db->update($query);
+            if ($update_cat) {
+                echo "<span style='color:green;font-size:18px;'>POST modifier avec succès</span>";
+            } else {
+                echo "<span style='color:red;font-size:18px;'>POST non modifier</span>";
+            }     
+         }else{
+            if ($file_size > 1848567) {
+                echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
+            } elseif (in_array($file_ext, $permited) == false) {
+                echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
+            } else {
+                move_uploaded_file($file_temp, $uploaded_image);
+   
+   
+                $query = "UPDATE post SET title ='$title', category_id='$category_id', image='$uploaded_image', author='$author', tags='$tags', body='$body' WHERE id='$edit_postid'";
+                $update_cat =  $db->update($query);
+                       if ($update_cat) {
+                           echo "<span style='color:green;font-size:18px;'>POST modifier avec succès</span>";
+                       } else {
+                           echo "<span style='color:red;font-size:18px;'>POST non modifier</span>";
+                       }     
+    
+            }
          }
         
        

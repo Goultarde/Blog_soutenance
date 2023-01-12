@@ -24,38 +24,49 @@ include 'includes/sidebar.php';
         <!--            For Update website Title & Logo-->
         <?php
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $title = $_POST['title'];
-            $logo = $_POST['logo'];
-
+            $title = mysqli_real_escape_string($db->link,$_POST['title']);
+ 
+            $permited = array('jpg', 'jpeg', 'png', 'gif');
+            $file_name = $_FILES['logo']['name'];
+            $file_size = $_FILES['logo']['size'];
+            $file_temp = $_FILES['logo']['tmp_name'];
+ 
             $div = explode('.', $file_name);
             $file_ext = strtolower(end($div));
             $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
             $uploaded_image = "uploads/" . $unique_image;
 
-            if(empty($title)) {
-                echo 'Il y a une erreur dans le titre';
-            }elseif (empty($logo)) {
-                $query = "UPDATE title SET title='$title'";
-                $update_title =  $db->update($query);
-                if ($update_title){
-                    echo "Mise à jour reussie";
-                }else {
-                    echo "Erreur";
+            if($title == '') {
+                echo "<span class='error'>Le titre ne peut pas être vide</span>";
+            } 
+            else{
+                if ($file_size == 0){
+                    $query = "UPDATE title SET title='$title'";
+                    $update_blog = $db->update($query);
+                    echo "<span class='success'> titre crée avec succès. </span>";
                 }
-            } elseif ($file_size > 1848567) {
-                echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
-            } elseif (in_array($file_ext, $permited) == false) {
-                echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
-            } else {
-                move_uploaded_file($file_temp, $uploaded_image);
-                $query = "INSERT INTO post(category_id, title, body, image, author, tags) VALUES ('$category_id','$title', '$body', '$uploaded_image', '$author', '$tags')";
-                $inserted_rows = $db->crate($query);
-    
-                if ($inserted_rows) {
-                    echo "<span class='success'> Données crées avec succès. </span>";
-                }else {
-                    echo "<span class= 'error'> Données non créées! </span>";
+                else{
+                    if ($file_size > 1848567) {
+                        echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
+                    } 
+                    if($title == '') {
+                        echo 'Il y a une erreur dans le titre';
+                    }elseif (in_array($file_ext, $permited) == false) {
+                        echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
+                    } else {
+                        move_uploaded_file($file_temp, $uploaded_image);
+                        $query = "UPDATE title SET title='$title', logo='$uploaded_image'";
+                        $update_blog = $db->update($query);
+            
+                        if ($update_blog) {
+                            echo "<span class='success'> Données crées avec succès. </span>";
+                        }else {
+                            echo "<span class= 'error'> Données non créées! </span>";
+                        }
+                        
+                    }
                 }
+            }
         }
 
         // Si la méthode de requête est POST
@@ -98,15 +109,23 @@ include 'includes/sidebar.php';
         <!--               For show blog title  & logo from database-->
         <?php
         $sql = "SELECT * FROM title_slogan";
-        // $result = mysqli_query($con, $sql);
-        // if (mysqli_num_rows($result) > 0) {
-        //     while($row = mysqli_fetch_assoc($result)) {
+        // $logo = mysqli_query($con, $sql);
+        // if (mysqli_num_rows($logo) > 0) {
+        //     while($row = mysqli_fetch_assoc($logo)) {
         //         echo "title: " . $row["title"]. " - slogan: " . $row["slogan"]. "<br>";
         //     }
         // }
         // Récupérer les données de la table title_slogan
         // Tant que les données sont récupérées
         //     Afficher les données
+        ?>
+        <?php
+                $query = "SELECT * FROM title WHERE id='1'";
+                $title = $db->select($query);
+                if ($title) {
+                    $logo = $title->fetch_assoc();
+                }
+
         ?>
         <div class="block sloginblock">
             <div class="left">
@@ -139,7 +158,7 @@ include 'includes/sidebar.php';
                 </form>
             </div>
             <div class="right">
-                <img src="uploads/logo.png" alt="logo">
+                <img src="<?php echo $logo['logo'] ?>" alt="Logo" />
             </div>
         </div>
     </div>
