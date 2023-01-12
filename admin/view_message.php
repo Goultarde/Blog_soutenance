@@ -1,9 +1,18 @@
 <?php
-// Inclure le fichier header.php
-include "includes/header.php"
-// Inclure le fichier sidebar.php
+include 'includes/header.php';
+include 'includes/sidebar.php';
 ?>
 <?php
+ if (isset($_GET["msg_id"])) {
+    $msg_id = $_GET['msg_id'];
+    if (empty($msg_id)) {
+        header("Location: inbox.php");
+    } else {
+        $id = $_GET['id'];
+    }
+} else {
+    header("Location: inbox.php");
+}
 // si la méthode de requête est GET
 // Alors
 //     Récupérer la valeur de msg_id
@@ -19,12 +28,17 @@ include "includes/header.php"
     <div class="box round first grid">
         <h2>Voir les messages</h2>
         <?php
+         if(isset($_POST["submit"])){
+            header("Location: inbox.php");
+         }
         // Si la méthode de requête est POST
         // Alors
         //     Rediriger vers inbox.php
         ?>
         <div class="block">
             <?php
+            ("SELECT * FROM contact WHERE selected = true");
+            
             // Selecter tous les messages de la table contact
             // Si le message est sélectionné
             // Alors
@@ -89,5 +103,5 @@ include "includes/header.php"
     });
 </script>
 <?php
-// Inclure le fichier footer.php
+include 'includes/footer.php';
 ?>

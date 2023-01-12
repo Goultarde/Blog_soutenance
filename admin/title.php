@@ -26,6 +26,12 @@ include 'includes/sidebar.php';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $title = $_POST['title'];
             $logo = $_POST['logo'];
+
+            $div = explode('.', $file_name);
+            $file_ext = strtolower(end($div));
+            $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
+            $uploaded_image = "uploads/" . $unique_image;
+
             if(empty($title)) {
                 echo 'Il y a une erreur dans le titre';
             }elseif (empty($logo)) {
@@ -36,9 +42,20 @@ include 'includes/sidebar.php';
                 }else {
                     echo "Erreur";
                 }
+            } elseif ($file_size > 1848567) {
+                echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
+            } elseif (in_array($file_ext, $permited) == false) {
+                echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
             } else {
-                
-            }
+                move_uploaded_file($file_temp, $uploaded_image);
+                $query = "INSERT INTO post(category_id, title, body, image, author, tags) VALUES ('$category_id','$title', '$body', '$uploaded_image', '$author', '$tags')";
+                $inserted_rows = $db->crate($query);
+    
+                if ($inserted_rows) {
+                    echo "<span class='success'> Données crées avec succès. </span>";
+                }else {
+                    echo "<span class= 'error'> Données non créées! </span>";
+                }
         }
 
         // Si la méthode de requête est POST
