@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Inclure le fichier header.php
 include "includes/header.php";
 // Inclure le fichier sidebar.php
@@ -14,4 +15,5 @@ $delete_cat =  $db->delete($query);
 // Inclure le fichier footer.php
 include 'includes/footer.php';
 header('location:category_list.php');
+ob_end_flush()
 ?>
