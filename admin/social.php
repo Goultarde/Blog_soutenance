@@ -28,11 +28,11 @@ include "includes/sidebar.php";
         //                 Sinon
         //                     Afficher un message d'erreur
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $facebook = $_POST['facebook'];
-            $github = $_POST['github'];
-            $skype = $_POST['skype'];
-            $linkedin = $_POST['linkedin'];
-            $google = $_POST['google'];
+            $facebook = mysqli_real_escape_string($db->link,$_POST['facebook']);
+            $github = mysqli_real_escape_string($db->link,$_POST['github']);
+            $skype = mysqli_real_escape_string($db->link,$_POST['skype']);
+            $linkedin = mysqli_real_escape_string($db->link,$_POST['linkedin']);
+            $google = mysqli_real_escape_string($db->link,$_POST['google']);
             
             if (empty($facebook)) {
                 echo "<span style='color:red;font-size:18px;'>Le champ ne doit pas être vide</span>";

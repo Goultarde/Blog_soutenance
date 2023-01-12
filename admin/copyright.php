@@ -14,7 +14,8 @@ include "includes/sidebar.php";
         if(isset($_POST['copyright'])){
         // Alors
         //     Récupérer la valeur de copyright
-            $copyright = $_POST['copyright'];
+            $copyright = $title = mysqli_real_escape_string($db->link,$_POST['copyright']);
+            
         //     Si copyright est vide
             if(empty($copyright)){
                 //Afficher un message d'erreur
