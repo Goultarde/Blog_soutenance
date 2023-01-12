@@ -1,16 +1,26 @@
 <?php
 // Inclure le fichier header.php
+include "includes/header.php";
 // Inclure le fichier sidebar.php
+include "includes/sidebar.php";
 ?>
 <?php
 // Si la méthode de requête est GET
+if (isset($_GET['edit_postid'])) {
 // Alors
 //     Récupérer la valeur de edit_postid
+    $edit_postid = $_GET['edit_postid'];
 //     Si edit_postid est vide
+    if('del_postid' == ''){
 //         Alors
 //             Rediriger vers post_list.php
+    header('post_list.php');
+    }else{
 //     Sinon
 //         Récupérer la valeur de id
+$edit_postid = $_GET['edit_postid'];
+    }   
+}
 ?>
 
 <div class="grid_10">
@@ -18,29 +28,68 @@
         <h2>Ajouter un nouveau post</h2>
         <?php
         // Si la méthode de requête est POST
-        // Alors
+        //if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //     Récupérer la valeur de title
+        //$title = mysqli_real_escape_string($db->link,$_POST['title']);
         //     Récupérer la valeur de category_id
+       // $category_id = mysqli_real_escape_string($db->link,$_POST['category_id']);
         //     Récupérer la valeur de author
+       // $author = mysqli_real_escape_string($db->link,$_POST['author']);
         //     Récupérer la valeur de tags
+       // $tags = mysqli_real_escape_string($db->link,$_POST['tags']);
         //     Récupérer la valeur de body
+       // $body = mysqli_real_escape_string($db->link,$_POST['body']);
         //     Récupérer la valeur de image
-        //     Si title est vide
-        //         Alors
-        //             Afficher un message d'erreur
-        //         Sinon
-        //             Insérer le post dans la table post
-        //             Si le post est inséré
-        //                 Alors
-        //                     Afficher un message de succès
-        //                 Sinon
-        //                     Afficher un message d'erreur
+        //$image = mysqli_real_escape_string($db->link,$_POST['image']);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $title = mysqli_real_escape_string($db->link,$_POST['title']);
+            $category_id = mysqli_real_escape_string($db->link,$_POST['category_id']);
+            $author = mysqli_real_escape_string($db->link,$_POST['author']);
+            $tags = mysqli_real_escape_string($db->link,$_POST['tags']);
+            $body = mysqli_real_escape_string($db->link,$_POST['body']);
+ 
+            $permited = array('jpg', 'jpeg', 'png', 'gif');
+            $file_name = $_FILES['image']['name'];
+            $file_size = $_FILES['image']['size'];
+            $file_temp = $_FILES['image']['tmp_name'];
+ 
+            $div = explode('.', $file_name);
+            $file_ext = strtolower(end($div));
+            $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
+            $uploaded_image = "uploads/" . $unique_image;
+ 
+ 
+            if ('$title' == '') {
+             echo "<span style='color:red;front-size:18px;'>Le champ ne doit pas être vide</span>";
+         } elseif ($file_size > 1848567) {
+             echo "<span class='error'>La taille de l'image doit être inférieur à 1 Mo! </span>";
+         } elseif (in_array($file_ext, $permited) == false) {
+             echo "<span class='error'>Vous ne pouvez telecharger que :-" . implode('.', $permited) . "</span>";
+         } else {
+             move_uploaded_file($file_temp, $uploaded_image);
+
+
+             $query = "UPDATE post SET title ='$title', category_id='$category_id', image='$uploaded_image', author='$author', tags='$tags', body='$body' WHERE id='$edit_postid'";
+             $update_cat =  $db->update($query);
+                    if ($update_cat) {
+                        echo "<span style='color:green;font-size:18px;'>POST modifier avec succès</span>";
+                    } else {
+                        echo "<span style='color:red;font-size:18px;'>POST non modifier</span>";
+                    }     
+ 
+         }
+        
+       
+    }
         ?>
         <div class="block">
             <?php
-            // Récupérer le post de la table post
-            // Tant que le post est récupéré
-            //     Afficher les valeurs de title, category_id, author, tags, body et image dans les champs correspondants
+            
+            $query="SELECT * FROM post WHERE id='$edit_postid'";
+            $post= $db->crate($query);
+            $print = $post->fetch_assoc();
+            
             ?>
             <form action="" method="post" enctype="multipart/form-data">
                 <table class="form">
@@ -50,7 +99,7 @@
                             <label>Title</label>
                         </td>
                         <td>
-                            <input type="text" name="title" value="" class="medium" />
+                            <input type="text" name="title" value="<?php echo $print['title'];?>" class="medium" />
                         </td>
                     </tr>
 
@@ -62,9 +111,14 @@
                             <select id="select" name="category_id">
                                 <option>Selectionner une catégorie</option>
                                 <?php
-                                // Récupérer les catégories de la table category
-                                // Tant que les catégories sont récupérées
-                                //     Afficher les catégories dans la liste déroulante
+                                 $query = "SELECT * FROM category";
+                                 $show_category = $db->select($query);
+                                 if ($show_category) {
+                                     while ($result = $show_category->fetch_assoc()) {
+                                 ?>
+                                         <option value="<?php echo $result['category_id'] ?>"><?php echo $result['name'] ?></option>
+                                 <?php };
+                                 }
                                 ?>
                             </select>
                         </td>
@@ -74,8 +128,8 @@
                             <label>Télécharger une image</label>
                         </td>
                         <td>
-                            <img src="" height="60px" width="100px" alt="">
-                            <input type="file" name="image" />
+                            <img src="<?php echo $print['image'];?>" height="60px" width="100px" alt="">
+                            <input type="file" name="image" value="<?php echo $print['image'];?>" />
                         </td>
                     </tr>
                     <tr>
@@ -83,7 +137,8 @@
                             <label>Nom de l'auteur</label>
                         </td>
                         <td>
-                            <input type="text" name="author" value="" />
+                            <input type="text" name="author" value="<?php echo $print['author'];?>" />
+                            <td></td>
                         </td>
                     </tr>
                     <tr>
@@ -91,7 +146,8 @@
                             <label>Tags</label>
                         </td>
                         <td>
-                            <input type="text" name="tags" value="" />
+                            <input type="text" name="tags" value="<?php echo $print['tags'];?>" />
+                            <td></td>
                         </td>
                     </tr>
                     <tr>
@@ -99,7 +155,8 @@
                             <label>Contenu</label>
                         </td>
                         <td>
-                            <textarea class="tinymce" name="body"></textarea>
+                            <textarea class="tinymce" name="body"><?php echo $print['body'];?></textarea>
+                            <td></td>
                         </td>
                     </tr>
                     <tr>
@@ -125,4 +182,5 @@
 </script>
 <?php
 // Inclure le fichier footer.php
+include "includes/footer.php";
 ?>

@@ -44,6 +44,7 @@ if($delete_data){
     //                 Afficher un message de succès
     //                 Rediriger vers post_list.php
     echo "<span style='color:green;font-size:18px;'>Data Suprimer</ span>";
+    header('location:post_list.php');
 }
 //             Sinon
 //                 Afficher un message d'erreur
