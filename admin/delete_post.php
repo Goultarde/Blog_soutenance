@@ -1,57 +1,61 @@
 <?php
 // Inclure le fichier header.php
-include 'includes/header.php';
+include_once "includes/header.php";
 // Inclure le fichier sidebar.php
-include 'includes/sidebar.php';
+include_once "includes/header.php";
 ?>
 
 <?php
 // Inclure la variable $db = new Database();
-$db = new Database();
+
+
 // Si la méthode de requête est GET
+if ($_SERVER['REQUEST_METHOD'] == 'GET'){
 // Alors
 //     Récupérer la valeur de del_postid
+$del_postid = $_GET['del_postid'];
 //     Si del_postid est vide
+    if(empty($del_postid)){
 //         Alors
-//             Rediriger vers post_list.php
+//             Rediriger vers post_list.php*
+        header('post_list.php');
+    }
 //     Sinon
+    else {
 //         Récupérer la valeur de delete_id
+$del_postid = $_GET['del_postid'];
+
 //         Récupérer les données de la table post
-//         Tant que les données sont récupérées
-//             Récupérer la valeur de imglink
+$query="SELECT * FROM post";
+$post= $db->crate($query);
+
+    //         Tant que les données sont récupérées
+while($post->fetch_assoc()){
+    $query="SELECT * FROM post";
+    //             Récupérer la valeur de image
+    $image=$_GET['img_link'];
 //             Supprimer l'image
+    $delete_img = "DELETE FROM post WHERE image = '$image'";
+    $delete_data = $db->delete($delete_img);
 //         Supprimer les données de la table post
 //         Si les données sont supprimées
-//             Alors
-//                 Afficher un message de succès
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $del_postid = $_GET["del_postid"] ;
+if($delete_data){
+    //             Alors
+    //                 Afficher un message de succès
+    //                 Rediriger vers post_list.php
+    echo "<span style='color:green;font-size:18px;'>Data Suprimer</ span>";
 }
-if (!isset($del_postid) || $del_postid == NULL ){
-    header('location:category_list.php');
-    }else{
-        $del_postid = $_GET["del_postid"] ;
-        
+//             Sinon
+//                 Afficher un message d'erreur
+//                 Rediriger vers post_list.php
+else{
+    echo "<span style='color:red;font-size:18px;'>Data Non Suprimer</ span>";
+    header('location:post_list.php');
+}
+            }
     }
-?>
-
-
-<?php
-ob_start();
-// Inclure le fichier header.php
-include "includes/header.php";
-// Inclure le fichier sidebar.php
-include "includes/sidebar.php";
+}
 ?>
 <?php
-$id = $_GET['catid'];
-$query = "DELETE FROM category WHERE category_id=$id";
-$delete_cat =  $db->delete($query);
-
-?>
-<?php
-// Inclure le fichier footer.php
-include 'includes/footer.php';
-header('location:category_list.php');
-ob_end_flush();
+include_once "includes/footer.php";
 ?>

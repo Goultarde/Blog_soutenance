@@ -25,13 +25,13 @@ include 'includes/sidebar.php';
         <?php
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $title = $_POST['title'];
-            $logo = $_POST['logo']; 
+            $logo = $_POST['logo'];
             if(empty($title)) {
                 echo 'Il y a une erreur dans le titre';
-            }else if (empty($logo)) {
-                $query = "UPDATE title SET title='$title' WHERE id=1";
+            }elseif (empty($logo)) {
+                $query = "UPDATE title SET title='$title'";
                 $update_title =  $db->update($query);
-                if ($sql){
+                if ($update_title){
                     echo "Mise à jour reussie";
                 }else {
                     echo "Erreur";

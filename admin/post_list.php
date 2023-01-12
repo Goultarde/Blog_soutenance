@@ -52,8 +52,8 @@ include "includes/sidebar.php";
                         <td><?php echo $result['author'];?></td>
                         <td><?php echo $result['tags'];?></td>
                         <td><?php echo $result['date'];?></td>
-                        <td><a href="edit_post.php?edit_postid=">Modifier</a>
-                            || <a onclick="return confirm('Etes vous sur de vouloir supprimer ?')" href="delete_post.php?del_postid=">Supprimer</a></td>
+                        <td><a href="edit_post.php?edit_postid=<?php echo $result['id'] ?>">Modifier</a>
+                            || <a onclick="return confirm('Etes vous sur de vouloir supprimer ?')" href="delete_post.php?del_postid=<?php echo $result['id'] ?>&img_link=<?php echo $result['image'] ?>">Supprimer</a></td>
                     </tr>
                     <?php
                     
