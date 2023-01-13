@@ -3,15 +3,15 @@ include 'includes/header.php';
 include 'includes/sidebar.php';
 ?>
 <?php
- if (isset($_GET["msg_id"])) {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') { 
     $msg_id = $_GET['msg_id'];
     if (empty($msg_id)) {
-        header("Location: inbox.php");
+        header("Location: /inbox.php");
     } else {
-        $id = $_GET['id'];
+        $id = $_GET['msg_id'];
     }
 } else {
-    header("Location: inbox.php");
+    header("Location: /inbox.php");
 }
 // si la méthode de requête est GET
 // Alors
@@ -28,8 +28,8 @@ include 'includes/sidebar.php';
     <div class="box round first grid">
         <h2>Voir les messages</h2>
         <?php
-         if(isset($_POST["submit"])){
-            header("Location: inbox.php");
+         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            header("Location: /inbox.php");
          }
         // Si la méthode de requête est POST
         // Alors
@@ -37,7 +37,11 @@ include 'includes/sidebar.php';
         ?>
         <div class="block">
             <?php
-            ("SELECT * FROM contact WHERE selected = true");
+            $query = ("SELECT * FROM contact WHERE id=$id");
+            $result = $db->select($query);
+
+            while($msg = $result->fetch_assoc()) {
+                echo "Message : " . $msg["message"];
             
             // Selecter tous les messages de la table contact
             // Si le message est sélectionné
@@ -53,7 +57,7 @@ include 'includes/sidebar.php';
                             <label>Nom</label>
                         </td>
                         <td>
-                            <input type="text" readonly value="" class="medium" />
+                            <input type="text" readonly value="<?php echo $msg["name"] ?>" class="medium" />
                         </td>
                     </tr>
 
@@ -62,15 +66,15 @@ include 'includes/sidebar.php';
                             <label>Email</label>
                         </td>
                         <td>
-                            <input type="text" readonly value="" />
+                            <input type="text" readonly value="<?php echo $msg["email"] ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>Objet</label>
+                            <label>Sujet</label>
                         </td>
                         <td>
-                            <input type="text" readonly value="" />
+                            <input type="text" readonly value="<?php echo $msg["subject"] ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -78,13 +82,13 @@ include 'includes/sidebar.php';
                             <label>Message</label>
                         </td>
                         <td>
-                            <textarea style="width: 60%" readonly rows="12"></textarea>
+                            <textarea style="width: 60%" readonly rows="12"><?php echo $msg["message"] ?></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>
-                            <input type="submit" name="submit" Value="ok" />
+                            <a href="inbox.php">Retour</a>
                         </td>
                     </tr>
                 </table>
@@ -92,6 +96,11 @@ include 'includes/sidebar.php';
         </div>
     </div>
 </div>
+
+<?php
+}
+?>
+
 <!-- Load TinyMCE -->
 <script src="js/tiny-mce/jquery.tinymce.js" type="text/javascript"></script>
 <script type="text/javascript">

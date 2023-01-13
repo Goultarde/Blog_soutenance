@@ -2,11 +2,12 @@
 // Inclure le fichier header.php
 include_once "includes/header.php";
 // Inclure le fichier sidebar.php
-include_once "includes/header.php";
+include_once "includes/sidebar.php";
 ?>
 
 <?php
 // Inclure la variable $db = new Database();
+$db = new Database();
 
 
 // Si la méthode de requête est GET
