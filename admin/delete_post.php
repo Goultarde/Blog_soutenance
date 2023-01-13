@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Inclure le fichier header.php
 include_once "includes/header.php";
 // Inclure le fichier sidebar.php
@@ -60,4 +61,5 @@ else{
 ?>
 <?php
 include_once "includes/footer.php";
+ob_end_flush();
 ?>

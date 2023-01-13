@@ -107,14 +107,7 @@ include 'includes/sidebar.php';
 
 
         <!--               For show blog title  & logo from database-->
-        <?php
-        $sql = "SELECT * FROM title_slogan";
-        // $logo = mysqli_query($con, $sql);
-        // if (mysqli_num_rows($logo) > 0) {
-        //     while($row = mysqli_fetch_assoc($logo)) {
-        //         echo "title: " . $row["title"]. " - slogan: " . $row["slogan"]. "<br>";
-        //     }
-        // }
+        <?php       
         // Récupérer les données de la table title_slogan
         // Tant que les données sont récupérées
         //     Afficher les données

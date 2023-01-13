@@ -28,19 +28,12 @@ $edit_postid = $_GET['edit_postid'];
         <h2>Ajouter un nouveau post</h2>
         <?php
         // Si la méthode de requête est POST
-        //if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //     Récupérer la valeur de title
-        //$title = mysqli_real_escape_string($db->link,$_POST['title']);
         //     Récupérer la valeur de category_id
-       // $category_id = mysqli_real_escape_string($db->link,$_POST['category_id']);
         //     Récupérer la valeur de author
-       // $author = mysqli_real_escape_string($db->link,$_POST['author']);
         //     Récupérer la valeur de tags
-       // $tags = mysqli_real_escape_string($db->link,$_POST['tags']);
         //     Récupérer la valeur de body
-       // $body = mysqli_real_escape_string($db->link,$_POST['body']);
         //     Récupérer la valeur de image
-        //$image = mysqli_real_escape_string($db->link,$_POST['image']);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $title = mysqli_real_escape_string($db->link,$_POST['title']);
